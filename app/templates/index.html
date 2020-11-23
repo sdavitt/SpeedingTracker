@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+{% set active_page='index' -%}
+
+{% block title %}
+{{ super() }} | Home
+{% endblock %}
+
+{% block body %}
+<div class="container d-flex justify-content-center" style="margin-top: 50px; margin-bottom: 50px;">
+    <div class="col-md-6">
+        <a href="{{ url_for('t1btn') }}" type="button" class="btn btn-primary btn-block">I'm on Team 1.</a>
+    </div>
+    <div class="col-md-6">
+        <a href="{{ url_for('t2btn') }}" type="button" class="btn btn-primary btn-block">I'm on Team 2.</a>
+    </div>
+</div>
+{% endblock %}

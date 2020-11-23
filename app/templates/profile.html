@@ -1,0 +1,47 @@
+{% extends 'layout.html' %}
+{% set active_page='profile' -%}
+
+{% block title %}
+{{ super() }} | {{ "{}".format(current_user.username) }}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+	<h3>Hello, {{ "{}".format(current_user.username) }}.</h3>
+	<hr>
+	<div class="row">
+		<div class="col-md-6 offset-md-3">
+			<p>Use the below form to change user data.</p>
+			<form action="{{ url_for('authentication.profile') }}" method="POST" novalidate>
+				{{ form.hidden_tag() }}
+
+				<div class="form-group">
+					{{ form.display(class='form-control', placeholder="Display Name") }}
+				</div>
+				<div class="form-group">
+					{{ form.team(class='form-control', placeholder="Team") }}
+				</div>
+				{{ form.submit(class='btn btn-primary btn-block') }}
+			</form>
+
+			{#<form action="{{ url_for('authentication.profile') }}" method="POST">
+				<div class="form-group">
+					<input type="text" class="form-control" name="display" value="{{ user.display }}"
+						placeholder="Display Name">
+				</div>
+				<div class="form-group">
+					<input type="text" class="form-control" name="team" value="{{ user.team }}" placeholder="Team">
+				</div>
+				<input type="submit" class="btn btn-primary btn-block">
+			</form>#}
+			<hr>
+			<a href="{{ url_for('authentication.reset') }}" type="button" value="reset" name="reset"
+				class="btn btn-info btn-lg btn-block">Reset my counts.</a>
+			<a href="{{ url_for('authentication.resetnotshots') }}" type="button" value="reset" name="reset"
+				class="btn btn-info btn-lg btn-block">Reset my counts(not including shots).</a>
+			<a href="{{ url_for('authentication.removeashot') }}" type="button" value="reset" name="reset"
+				class="btn btn-info btn-lg btn-block">Remove a shot.</a>
+		</div>
+	</div>
+</div>
+{% endblock %}

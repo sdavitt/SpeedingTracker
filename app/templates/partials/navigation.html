@@ -1,0 +1,37 @@
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <div class="collapse navbar-collapse" id="collapsibleNavId">
+        <div class="col-md-4">
+            <ul class="navbar-nav mt-2 mt-lg-0">
+                {% for href, id, caption in navigation_bar %}
+                <li class="nav-item {% if id == active_page %}active{% endif %}">
+                    <a class="nav-link" href="{{ href|e }}">{{ caption|e }} <span class="sr-only">(current)</span></a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <ul class="navbar-nav">
+                <a href="{{ url_for('taken') }}" type="button" class="btn btn-secondary btn-block">I took a shot.</a>
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <ul class="navbar-nav float-right">
+                {% if not current_user.is_authenticated %}
+                <li class="nav-item">
+                    <a href="{{ url_for('authentication.login') }}" class="nav-link">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('authentication.register') }}" class="nav-link">Register</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a href="{{ url_for('authentication.profile') }}" class="nav-link">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('authentication.logout') }}" class="nav-link">Logout</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

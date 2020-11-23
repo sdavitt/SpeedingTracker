@@ -1,0 +1,72 @@
+{% extends 'layout.html' %}
+{% set active_page='t2' -%}
+
+{% block title %}
+{{ super() }} | T2
+{% endblock %}
+
+{% block body %}
+<meta http-equiv="refresh" content="3" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"
+    integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw=="
+    crossorigin="anonymous"></script>
+<div class="container">
+    <canvas id="bchart" width="100%" height="25"></canvas>
+    <script>
+        var people = {{ names2| tojson }};
+        var t = {{ taken2| tojson }};
+        var ctx = document.getElementById('bchart').getContext('2d');
+        Chart.defaults.global.defaultFontColor = 'white';
+        Chart.defaults.global.defaultFontSize = 32;
+        Chart.defaults.global.animation.duration = 20;
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: people,
+                datasets: [{
+                    label: 'shots taken',
+                    data: t,
+                    backgroundColor: [
+                        'rgba(255, 161, 242, 1)',
+                        'rgba(161, 236, 255, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)'
+                    ]
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            callback: function (value) { if (value % 1 === 0) { return value; } }
+                        }
+                    }]
+                },
+                legend: {
+                    display: false,
+                }
+            }
+        });
+    </script>
+
+</div>
+<div class="row justify-content-center" style="margin-top: 10px">
+    {% for u in users if u.team == 2 %}
+    <div class="col-md-2">
+        <div class="card">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between"> Owed: <span
+                        class="float-right font-weight-bold">{{ u.owed }}</span></li>
+                <li class="list-group-item"><a href="{{ url_for('giveashot', id=u.id) }}" type="button"
+                        class="btn btn-secondary btn-block">Take one, {{ u.display }}.</a></li>
+                <li class="list-group-item"><a href="{{ url_for('givepower', id=u.id) }}" type="button"
+                        class="btn btn-secondary btn-block text-left">In hand: <span
+                            class="float-right font-weight-bold">{{ u.inhand }}</a></li>
+            </ul>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
